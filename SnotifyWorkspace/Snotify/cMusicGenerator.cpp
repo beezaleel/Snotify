@@ -57,6 +57,27 @@ cSong* cMusicGenerator::getRandomSong(void)
 	return song;
 }
 
+cSong* cMusicGenerator::findSong(std::string songName, std::string artist)
+{
+	for (int i = 0; i < mMusics.Size(); i++) {
+		cList<std::string> songList;
+		std::stringstream line(mMusics.Get(i));
+		while (line.good()) {
+			std::string substr;
+			getline(line, substr, ',');
+			songList.Add(substr.c_str());
+		}
+		if (songList.Get(3) == songName && songList.Get(4) == artist) {
+			cSong* song = new cSong();
+			song->name = songList.Get(3).c_str();
+			song->artist = songList.Get(4).c_str();
+			song->numberOfTimesPlayed = i;
+			return song;
+		}
+	}
+	return nullptr;
+}
+
 int cMusicGenerator::GenerateRandomNumber(int max)
 {
 	if (!seeded) {
